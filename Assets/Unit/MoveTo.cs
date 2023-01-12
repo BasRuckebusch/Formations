@@ -2,20 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class MoveTo : MonoBehaviour
 {
 
-	[SerializeField] private Transform goal;
+	// [SerializeField] private Transform goal;
 	private NavMeshAgent agent;
+	// private new Camera camera;
+	// [SerializeField] private LayerMask ground;
+
 
 	void Start()
 	{
 		agent = GetComponent<NavMeshAgent>();
+		//camera = Camera.main;
 	}
 
 	void Update()
 	{
-		agent.destination = goal.position;
+		//	if (Input.GetMouseButtonDown(1))
+		//	{
+		//		RaycastHit hit;
+		//		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+		//		if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
+		//		{
+		//			agent.SetDestination(hit.point);
+		//		}
+		//	}
+	}
+
+	public void SetDesitnation(Vector3 pos)
+	{
+		agent.SetDestination(pos);
 	}
 }

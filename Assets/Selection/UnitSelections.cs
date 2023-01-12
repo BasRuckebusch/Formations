@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnitSelections : MonoBehaviour
 {
 	public List<GameObject> unitlist = new List<GameObject>();
-	[SerializeField] private List<GameObject> unitsSelected = new List<GameObject>();
+	public List<GameObject> unitsSelected = new List<GameObject>();
 	
 
 	// Singleton design pattern, only 1 UnitSelection can exist at a time.
@@ -27,20 +27,20 @@ public class UnitSelections : MonoBehaviour
 	{
 		DeselectAll();
 		unitsSelected.Add(unit);
-		unit.transform.GetChild(0).gameObject.SetActive(true);
+		EnableUnit(unit);
 	}
 
 	public void ShiftSelect(GameObject unit)
 	{
 		if (unitsSelected.Contains(unit))
 		{
-			unit.transform.GetChild(0).gameObject.SetActive(false);
+			DisableUnit(unit);
 			unitsSelected.Remove(unit);
 		}
 		else
 		{
 			unitsSelected.Add(unit);
-			unit.transform.GetChild(0).gameObject.SetActive(true);
+			EnableUnit(unit);
 		}
 
 	}
@@ -49,7 +49,7 @@ public class UnitSelections : MonoBehaviour
 		if (!unitsSelected.Contains(unit))
 		{
 			unitsSelected.Add(unit);
-			unit.transform.GetChild(0).gameObject.SetActive(true);
+			EnableUnit(unit);
 		}
 	}
 
@@ -57,10 +57,22 @@ public class UnitSelections : MonoBehaviour
 	{
 		foreach (GameObject unit in unitsSelected)
 		{
-			unit.transform.GetChild(0).gameObject.SetActive(false);
+			DisableUnit(unit);
 		}
 
 		unitsSelected.Clear();
+	}
+
+	private void EnableUnit(GameObject unit)
+	{
+		unit.transform.GetChild(0).gameObject.SetActive(true);
+		unit.GetComponent<MoveTo>().enabled = true;
+	}
+
+	private void DisableUnit(GameObject unit)
+	{
+		unit.transform.GetChild(0).gameObject.SetActive(false);
+		unit.GetComponent<MoveTo>().enabled = false;
 	}
 
 }

@@ -13,8 +13,6 @@ public class UnitDrag : MonoBehaviour
 	private Vector2 startPos = Vector2.zero;
 	private Vector2 endPos = Vector2.zero;
 
-
-
 	void Start()
 	{
 		camera = Camera.main;

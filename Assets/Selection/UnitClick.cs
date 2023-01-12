@@ -8,7 +8,6 @@ public class UnitClick : MonoBehaviour
 	private new Camera camera;
 
 	[SerializeField] private LayerMask clickable;
-	[SerializeField] private LayerMask notClickable;
 
 	void Start()
 	{

@@ -131,12 +131,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5463383432980010989}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96e40b08229fa164cac39597a6ee1909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goal: {fileID: 0}
+  ground:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &985556036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +164,7 @@ GameObject:
   - component: {fileID: 1745281861772128402}
   - component: {fileID: 7271282440356089543}
   - component: {fileID: 1969320116949084381}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SelectRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
