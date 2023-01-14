@@ -32,15 +32,16 @@ public class UnitSelections : MonoBehaviour
 
 	public void ShiftSelect(GameObject unit)
 	{
-		if (unitsSelected.Contains(unit))
-		{
-			DisableUnit(unit);
-			unitsSelected.Remove(unit);
-		}
-		else
+		if (!unitsSelected.Contains(unit))
 		{
 			unitsSelected.Add(unit);
 			EnableUnit(unit);
+			
+		}
+		else
+		{
+			DisableUnit(unit);
+			unitsSelected.Remove(unit);
 		}
 
 	}
