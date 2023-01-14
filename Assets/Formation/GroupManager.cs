@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,9 @@ public class GroupManager : MonoBehaviour
 	[SerializeField] private LayerMask ground;
 
 	private float spread = 2.5f;
+	private float angle = 0.0f;
+
+	private float radius = 10.0f;
 
 	[SerializeField] private Slider spreadSlider;
 
@@ -23,6 +27,11 @@ public class GroupManager : MonoBehaviour
 		square,
 		circle
 	}
+
+	private Vector2 startPos = Vector2.zero;
+	private Vector2 endPos = Vector2.zero;
+
+	[SerializeField] private LineRenderer visual;
 
 	private Formation formation = Formation.square;
 
@@ -57,17 +66,41 @@ public class GroupManager : MonoBehaviour
 
 		grouparray[0] = UnitSelections.Instance.unitsSelected;
 
-		
-
-		//	if (UnitSelections.Instance.unitsSelected.Count != 0)
-		//	{
-		//		grouparray[0] = UnitSelections.Instance.unitsSelected;
-		//	}
 
 		if (Input.GetMouseButtonDown(1))
 		{
+			startPos = Input.mousePosition;
+		}
+
+		if (Input.GetMouseButton(1))
+		{
+			endPos = Input.mousePosition;
+			DrawVisual();
+		}
+
+		if (Input.GetMouseButtonUp(1))
+		{
+
+			angle = Mathf.Atan2(endPos.y - startPos.y, endPos.x - startPos.x);
 			RaycastHit hit;
-			Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+			Ray ray = camera.ScreenPointToRay(startPos);
+			Vector3 sStartpos = new Vector3();
+			Vector3 sEndpos = new Vector3();
+			if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
+			{
+				sStartpos = hit.point;
+			}
+			ray = camera.ScreenPointToRay(endPos);
+			if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
+			{
+				sEndpos = hit.point;
+			}
+
+			Vector3 minus = sEndpos - sStartpos;
+			radius = minus.magnitude;
+
+
+			ray = camera.ScreenPointToRay(startPos);
 			if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
 			{
 				groupMiddle[selected] = hit.point;
@@ -84,29 +117,11 @@ public class GroupManager : MonoBehaviour
 						break;
 				}
 			}
-		}
 
-		
+			startPos = Vector2.zero;
+			endPos = Vector2.zero;
 
-		if (Input.GetKeyDown(KeyCode.F1))
-		{
-			CreateGroup(1);
-		}
-		if (Input.GetKeyDown(KeyCode.F2))
-		{
-			CreateGroup(2);
-		}
-		if (Input.GetKeyDown(KeyCode.F3))
-		{
-			CreateGroup(3);
-		}
-		if (Input.GetKeyDown(KeyCode.F4))
-		{
-			CreateGroup(4);
-		}
-		if (Input.GetKeyDown(KeyCode.F5))
-		{
-			CreateGroup(5);
+			DrawVisual();
 		}
 
 	}
@@ -121,6 +136,23 @@ public class GroupManager : MonoBehaviour
 		}
 	}
 
+	void DrawVisual()
+	{
+		float height = 10;
+		Vector3[] pos = new Vector3[3];
+		RaycastHit hit;
+		Ray ray = camera.ScreenPointToRay(startPos);
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
+		{
+			pos[0] = new Vector3(hit.point.x, height, hit.point.z);
+		}
+		ray = camera.ScreenPointToRay(endPos);
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
+		{
+			pos[1] = new Vector3(hit.point.x, height, hit.point.z);
+		}
+		visual.SetPositions(pos);
+	}
 
 	public void ToggleSquare()
 	{
@@ -144,7 +176,7 @@ public class GroupManager : MonoBehaviour
 
 	void Square(int i)
 	{
-		List<Vector3> squarePos = FormationManager.Instance.Square(groupMiddle[i], grouparray[i].Count, spread);
+		List<Vector3> squarePos = FormationManager.Instance.Square(groupMiddle[i], grouparray[i].Count, spread, angle);
 
 		int count = 0;
 		foreach (GameObject unit in grouparray[i])
@@ -157,7 +189,7 @@ public class GroupManager : MonoBehaviour
 
 	void Circle(int i)
 	{
-		List<Vector3> circlePos = FormationManager.Instance.Circle(groupMiddle[i], grouparray[i].Count);
+		List<Vector3> circlePos = FormationManager.Instance.Circle(groupMiddle[i], grouparray[i].Count, radius);
 
 		int count = 0;
 		foreach (GameObject unit in grouparray[i])

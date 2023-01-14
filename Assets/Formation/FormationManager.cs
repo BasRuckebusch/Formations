@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using TreeEditor;
 using UnityEditor;
 using UnityEngine;
@@ -21,7 +22,7 @@ public class FormationManager : MonoBehaviour
 		}
 	}
 
-	public List<Vector3> Square(Vector3 middle, int size, float spread) 
+	public List<Vector3> Square(Vector3 middle, int size, float spread, float angle) 
 	{
 		List<Vector3> postions = new List<Vector3>();
 
@@ -55,10 +56,19 @@ public class FormationManager : MonoBehaviour
 			}
 		}
 
-		return postions;
+		List<Vector3> rotpos = new List<Vector3>();
+
+		angle = angle + (90 * Mathf.Deg2Rad); // Add 90 deg to make more intuitive
+		foreach (var pos in postions)
+		{	
+			rotpos.Add(RotatePoint(middle, angle, pos));
+		}
+
+
+		return rotpos;
 	}
 
-	public List<Vector3> Circle(Vector3 middle, int size)
+	public List<Vector3> Circle(Vector3 middle, int size, float radius)
 	{
 		List<Vector3> postions = new List<Vector3>();
 
@@ -66,14 +76,33 @@ public class FormationManager : MonoBehaviour
 		{
 			var angle = i * Mathf.PI * 2 / size;
 
-			var x = Mathf.Cos(angle) * i;
-			var z = Mathf.Sin(angle) * i;
+			var x = Mathf.Cos(angle)* radius;
+			var z = Mathf.Sin(angle)* radius;
 			var pos = new Vector3(x, 0, z);
 
-			postions.Add(pos);
+			postions.Add(pos+middle);
 		}
 
 		return postions;
+	}
+
+
+	private Vector3 RotatePoint(Vector3 mid, float angle, Vector3 p)
+	{
+		
+		float s = Mathf.Sin(angle);
+		float c = Mathf.Cos(angle);
+
+		p.x -= mid.x;
+		p.z -= mid.z;
+
+		float xnew = p.x * c - p.z * s;
+		float ynew = p.x * s + p.z * c;
+
+		p.x = xnew + mid.x;
+		p.z = ynew + mid.z;
+
+		return p;
 	}
 
 }
