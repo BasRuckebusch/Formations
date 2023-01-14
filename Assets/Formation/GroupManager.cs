@@ -1,14 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GroupManager : MonoBehaviour
 {
 	public List<GameObject>[] grouparray = new List<GameObject>[5];
 	private Vector3[] groupMiddle = new Vector3[5];
 
+	private int selected = 0;
+
 	private Camera camera;
 	[SerializeField] private LayerMask ground;
+
+	private float spread = 2.5f;
+
+	[SerializeField] private Slider spreadSlider;
 
 	enum Formation
 	{
@@ -49,6 +57,8 @@ public class GroupManager : MonoBehaviour
 
 		grouparray[0] = UnitSelections.Instance.unitsSelected;
 
+		
+
 		//	if (UnitSelections.Instance.unitsSelected.Count != 0)
 		//	{
 		//		grouparray[0] = UnitSelections.Instance.unitsSelected;
@@ -60,15 +70,15 @@ public class GroupManager : MonoBehaviour
 			Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
 			{
-				groupMiddle[0] = hit.point;
+				groupMiddle[selected] = hit.point;
 
 				switch (formation)
 				{
 					case Formation.square:
-						Square(0);
+						Square(selected);
 						break;
 					case Formation.circle:
-						Circle(0);
+						Circle(selected);
 						break;
 					default:
 						break;
@@ -115,21 +125,26 @@ public class GroupManager : MonoBehaviour
 	public void ToggleSquare()
 	{
 		formation = Formation.square;
-		Square(0);
+		Square(selected);
 		Debug.Log("squam");
 	}
 
 	public void ToggleCircle()
 	{
 		formation = Formation.circle;
-		Circle(0);
+		Circle(selected);
 		Debug.Log("squit");
 	}
 
+	public void Spread()
+	{
+		spread = spreadSlider.value;
+		Square(selected);
+	}
 
 	void Square(int i)
 	{
-		List<Vector3> squarePos = FormationManager.Instance.Square(groupMiddle[i], grouparray[i].Count, 2.5f);
+		List<Vector3> squarePos = FormationManager.Instance.Square(groupMiddle[i], grouparray[i].Count, spread);
 
 		int count = 0;
 		foreach (GameObject unit in grouparray[i])

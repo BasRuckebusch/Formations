@@ -8,6 +8,7 @@ public class UnitClick : MonoBehaviour
 	private new Camera camera;
 
 	[SerializeField] private LayerMask clickable;
+	[SerializeField] private LayerMask UI;
 
 	void Start()
 	{
@@ -21,7 +22,7 @@ public class UnitClick : MonoBehaviour
 			RaycastHit hit;
 			Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 
-			if (Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)) 
+			if (Physics.Raycast(ray, out hit, Mathf.Infinity, clickable))
 			{
 				if (Input.GetKey(KeyCode.LeftShift))
 				{
@@ -31,6 +32,10 @@ public class UnitClick : MonoBehaviour
 				{
 					UnitSelections.Instance.Select(hit.collider.gameObject);
 				}
+			}
+			else if (Physics.Raycast(ray, out hit, Mathf.Infinity, UI))
+			{
+				Debug.Log("UI");
 			}
 			else
 			{
