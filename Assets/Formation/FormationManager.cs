@@ -22,7 +22,8 @@ public class FormationManager : MonoBehaviour
 		}
 	}
 
-	public List<Vector3> Square(Vector3 middle, int size, float spread, float angle) 
+
+	public List<Vector3> Square(Vector3 middle, int size, float spread, float angle, int formationWidth)
 	{
 		List<Vector3> postions = new List<Vector3>();
 
@@ -34,6 +35,19 @@ public class FormationManager : MonoBehaviour
 		{
 			width += (int)Mathf.Ceil(rest / height);
 		}
+
+		if (formationWidth != 0)
+		{
+			width = size/formationWidth;
+			height = formationWidth;
+			rest = size - (width * height);
+
+			if (rest > 0)
+			{
+				width += (int)Mathf.Ceil(rest / height);
+			}
+		}
+		
 
 		Vector3 mid = new Vector3(middle.x - (float)(((width) / 2) * spread), middle.y, middle.z - (float)(((height) / 2) * spread));
 		if (width % 2 == 0)

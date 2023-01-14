@@ -17,10 +17,12 @@ public class GroupManager : MonoBehaviour
 
 	private float spread = 2.5f;
 	private float angle = 0.0f;
+	private int width = 0;
 
 	private float radius = 10.0f;
 
 	[SerializeField] private Slider spreadSlider;
+	[SerializeField] private Slider widthSlider;
 
 	enum Formation
 	{
@@ -174,9 +176,15 @@ public class GroupManager : MonoBehaviour
 		Square(selected);
 	}
 
+	public void Width()
+	{
+		width = (int)widthSlider.value;
+		Square(selected);
+	}
+
 	void Square(int i)
 	{
-		List<Vector3> squarePos = FormationManager.Instance.Square(groupMiddle[i], grouparray[i].Count, spread, angle);
+		List<Vector3> squarePos = FormationManager.Instance.Square(groupMiddle[i], grouparray[i].Count, spread, angle, width);
 
 		int count = 0;
 		foreach (GameObject unit in grouparray[i])
