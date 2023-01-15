@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UnitDrag : MonoBehaviour
 {
@@ -46,11 +47,19 @@ public class UnitDrag : MonoBehaviour
 	}
 	void DrawVisual()
 	{
-		Vector2 center = (startPos + endPos)/2;
-		visual.position = center;
+		if (!IsOverUI())
+		{
+			Vector2 center = (startPos + endPos) / 2;
+			visual.position = center;
 
-		Vector2 size = new Vector2(Mathf.Abs(startPos.x - endPos.x), Mathf.Abs(startPos.y - endPos.y));
-		visual.sizeDelta = size;
+			Vector2 size = new Vector2(Mathf.Abs(startPos.x - endPos.x), Mathf.Abs(startPos.y - endPos.y));
+			visual.sizeDelta = size;
+		}
+		else
+		{
+			visual.sizeDelta = Vector2.zero;
+		}
+		
 	}
 	void DrawSelection()
 	{
@@ -90,5 +99,17 @@ public class UnitDrag : MonoBehaviour
 				UnitSelections.Instance.DragSelect(unit);
 			}
 		}
+	}
+
+	private static bool IsOverUI()
+	{
+		PointerEventData eventDataCurrentPosition;
+		List<RaycastResult> results;
+
+		eventDataCurrentPosition = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+		results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+		return results.Count > 0;
 	}
 }

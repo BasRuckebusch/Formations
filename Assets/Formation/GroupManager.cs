@@ -19,10 +19,16 @@ public class GroupManager : MonoBehaviour
 	private float angle = 0.0f;
 	private int width = 0;
 
+	private int rings = 1;
+	private float offset = 4;
+
 	private float radius = 10.0f;
 
 	[SerializeField] private Slider spreadSlider;
 	[SerializeField] private Slider widthSlider;
+
+	[SerializeField] private Slider ringSlider;
+	[SerializeField] private Slider offsetSlider;
 
 	enum Formation
 	{
@@ -160,27 +166,33 @@ public class GroupManager : MonoBehaviour
 	{
 		formation = Formation.square;
 		Square(selected);
-		Debug.Log("squam");
 	}
-
 	public void ToggleCircle()
 	{
 		formation = Formation.circle;
 		Circle(selected);
-		Debug.Log("squit");
 	}
-
 	public void Spread()
 	{
 		spread = spreadSlider.value;
 		Square(selected);
 	}
-
 	public void Width()
 	{
 		width = (int)widthSlider.value;
 		Square(selected);
 	}
+	public void Rings()
+	{
+		rings = (int)ringSlider.value;
+		Circle(selected);
+	}
+	public void Offset()
+	{
+		offset = offsetSlider.value;
+		Circle(selected);
+	}
+
 
 	void Square(int i)
 	{
@@ -197,7 +209,7 @@ public class GroupManager : MonoBehaviour
 
 	void Circle(int i)
 	{
-		List<Vector3> circlePos = FormationManager.Instance.Circle(groupMiddle[i], grouparray[i].Count, radius);
+		List<Vector3> circlePos = FormationManager.Instance.Circle(groupMiddle[i], grouparray[i].Count, radius, rings, offset, angle);
 
 		int count = 0;
 		foreach (GameObject unit in grouparray[i])

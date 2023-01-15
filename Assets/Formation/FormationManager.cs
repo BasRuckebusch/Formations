@@ -82,23 +82,42 @@ public class FormationManager : MonoBehaviour
 		return rotpos;
 	}
 
-	public List<Vector3> Circle(Vector3 middle, int size, float radius)
+	public List<Vector3> Circle(Vector3 middle, int size, float radius, int rings, float offset, float rotate)
 	{
 		List<Vector3> postions = new List<Vector3>();
 
-		for (int i = 0; i < size; i++)
+		int unitsPerRing = size / rings;
+		float rest = size - (unitsPerRing * rings);
+		if (rest > 0)
 		{
-			var angle = i * Mathf.PI * 2 / size;
-
-			var x = Mathf.Cos(angle)* radius;
-			var z = Mathf.Sin(angle)* radius;
-			var pos = new Vector3(x, 0, z);
-
-			postions.Add(pos+middle);
+			unitsPerRing += (int)Mathf.Ceil(rest / rings);
 		}
 
-		return postions;
+		for (int j = 0; j < rings; j++)
+		{
+			for (int i = 0; i < unitsPerRing; i++)
+			{
+				var angle = i * Mathf.PI * 2 / unitsPerRing;
+
+				var x = Mathf.Cos(angle) * radius;
+				var z = Mathf.Sin(angle) * radius;
+				var pos = new Vector3(x, 0, z);
+
+				postions.Add(pos + middle);
+			}
+			radius = radius + (j+1) + offset;
+		}
+
+		List<Vector3> rotpos = new List<Vector3>();
+
+		foreach (var pos in postions)
+		{
+			rotpos.Add(RotatePoint(middle, rotate, pos));
+		}
+
+		return rotpos;
 	}
+
 
 
 	private Vector3 RotatePoint(Vector3 mid, float angle, Vector3 p)
