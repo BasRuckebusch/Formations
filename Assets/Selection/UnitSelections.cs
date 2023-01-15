@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UnitSelections : MonoBehaviour
 {
 	public List<GameObject> unitlist = new List<GameObject>();
 	public List<GameObject> unitsSelected = new List<GameObject>();
-	
+
 
 	// Singleton design pattern, only 1 UnitSelection can exist at a time.
 	public static UnitSelections Instance { get; private set; }
 	private void Awake()
 	{
 		if (Instance != null && Instance != this)
-		{ 
+		{
 			Destroy(this.gameObject);
 			Debug.Log("UnitSelections already exists");
 		}
@@ -36,7 +37,7 @@ public class UnitSelections : MonoBehaviour
 		{
 			unitsSelected.Add(unit);
 			EnableUnit(unit);
-			
+
 		}
 		else
 		{
@@ -56,12 +57,16 @@ public class UnitSelections : MonoBehaviour
 
 	public void DeselectAll()
 	{
-		foreach (GameObject unit in unitsSelected)
+		if (!IsOverUI())
 		{
-			DisableUnit(unit);
+			foreach (GameObject unit in unitsSelected)
+			{
+				DisableUnit(unit);
+			}
+
+			unitsSelected.Clear();
 		}
 
-		unitsSelected.Clear();
 	}
 
 	private void EnableUnit(GameObject unit)
@@ -76,4 +81,16 @@ public class UnitSelections : MonoBehaviour
 		unit.GetComponent<MoveTo>().enabled = false;
 	}
 
+	private static bool IsOverUI()
+	{
+		PointerEventData eventDataCurrentPosition;
+		List<RaycastResult> results;
+
+		eventDataCurrentPosition = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+		results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+		return results.Count > 0;
+	}
 }
+
