@@ -1,11 +1,9 @@
-
-
 ![image](https://user-images.githubusercontent.com/97399311/213511954-edf132ec-70fc-4922-9d59-6fd87d761a1e.png)
 
 # Description
 This is a project that aims to create unit formations for Real-Time Strategy games in unity.
 
-In most RTS games, players can create formations for their units. This is done by selecting a group of units and then assigning them to a formation. These allow players to organize their forces and position them for maximum effectiveness on a virtual battlefield.
+In most RTS games, players can create formations for their units. This is done by selecting a group of units and then assigning a formation to them. These allow players to organize their forces and position them for maximum effectiveness on a virtual battlefield.
 
 # Design/implementation
 
@@ -29,9 +27,9 @@ UI:
 ![image](https://user-images.githubusercontent.com/97399311/213520780-9f167ae5-ab00-4769-afc8-8e3d6d95a5ea.png)
 
 Unit selection is done using the mouse and has two modes of selecting:<br>
-**Clicking**<br>
+***Clicking***<br>
 Clicking shoots a raycast from the camera to the mouse position, if it hits a unit they get selected and added to the selected unit list<br>
-**Dragging**<br>
+***Dragging***<br>
 Dragging has 3 phases, first when clicking it records the start position, whilst holding the button down it will update the end position and draw a visual and when you let go it will select all the units within the rectangle and reset the start and end position
 
 **Shift**<br>
@@ -53,7 +51,6 @@ The magnitude of the end position minus the start position is used for the radiu
 Every other variable is controlled using the UI. 
 
 ![image](https://user-images.githubusercontent.com/97399311/213534911-8e4fbe7b-b5dd-4bc7-b47e-22e5b054da91.png)
-
 
 ## Rectangle Formation
 ![image](https://user-images.githubusercontent.com/97399311/213535760-2b3244ca-2f8f-4437-bdc8-d8b2db7e5cff.png)
@@ -97,7 +94,7 @@ The systems themselves are robust and easily expanded upon, with the system as i
 
 # Conclusion/Future work
 
-The result is a competent project with a unit selection and formation system in place. <br>
+The result is a competent project with a unit selection and formation system. <br>
 Whilst it has a lot of room left for additions it has a very solid base that's easy to expand upon now that it's in place, especially when it comes to adding new formations and variables to those formations.
 What is here already allows for a lot of creative uses and shows off the concept well.
 
