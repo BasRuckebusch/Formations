@@ -6,7 +6,6 @@ public class Unit : MonoBehaviour
     {
         UnitSelections.Instance.unitlist.Add(gameObject);
 	}
-
     void OnDestroy()
     {
 		UnitSelections.Instance.unitlist.Remove(gameObject);

@@ -68,9 +68,7 @@ public class GroupManager : MonoBehaviour
 
 	void Update()
 	{
-
 		grouparray[0] = UnitSelections.Instance.unitsSelected;
-
 
 		if (Input.GetMouseButtonDown(1))
 		{
@@ -189,7 +187,6 @@ public class GroupManager : MonoBehaviour
 		offset = offsetSlider.value;
 		Circle(selected);
 	}
-
 
 	void Square(int i)
 	{

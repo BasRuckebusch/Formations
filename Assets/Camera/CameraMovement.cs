@@ -8,7 +8,6 @@ public class CameraMovement : MonoBehaviour
 	{
 		camera = Camera.main;
 	}
-
 	void Update()
 	{
 		Vector3 direction = new Vector3();

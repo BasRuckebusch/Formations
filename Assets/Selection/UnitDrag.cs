@@ -4,8 +4,6 @@ using UnityEngine.EventSystems;
 
 public class UnitDrag : MonoBehaviour
 {
-
-
 	private new Camera camera;
 	[SerializeField] private RectTransform visual;
 

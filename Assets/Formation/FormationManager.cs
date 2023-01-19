@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class FormationManager : MonoBehaviour
 {
-
 	public static FormationManager Instance { get; private set; }
 	private void Awake()
 	{
@@ -17,7 +16,6 @@ public class FormationManager : MonoBehaviour
 			Instance = this;
 		}
 	}
-
 
 	public List<Vector3> Square(Vector3 middle, int size, float spread, float angle, int formationWidth)
 	{
@@ -34,7 +32,7 @@ public class FormationManager : MonoBehaviour
 
 		if (formationWidth != 0)
 		{
-			width = size/formationWidth;
+			width = size / formationWidth;
 			height = formationWidth;
 			rest = size - (width * height);
 
@@ -43,7 +41,6 @@ public class FormationManager : MonoBehaviour
 				width += (int)Mathf.Ceil(rest / height);
 			}
 		}
-		
 
 		Vector3 mid = new Vector3(middle.x - (float)(((width) / 2) * spread), middle.y, middle.z - (float)(((height) / 2) * spread));
 		if (width % 2 == 0)
@@ -55,12 +52,11 @@ public class FormationManager : MonoBehaviour
 			mid.z += 0.5f * spread;
 		}
 
-
 		for (int x = 0; x < width; x++)
 		{
 			for (int z = 0; z < height; z++)
 			{
-				Vector3 pos = new Vector3(mid.x + x*spread, mid.y, mid.z + z*spread);
+				Vector3 pos = new Vector3(mid.x + x * spread, mid.y, mid.z + z * spread);
 
 				postions.Add(pos);
 			}
@@ -70,10 +66,9 @@ public class FormationManager : MonoBehaviour
 
 		angle = angle + (90 * Mathf.Deg2Rad); // Add 90 deg to make more intuitive
 		foreach (var pos in postions)
-		{	
+		{
 			rotpos.Add(RotatePoint(middle, angle, pos));
 		}
-
 
 		return rotpos;
 	}
@@ -101,7 +96,7 @@ public class FormationManager : MonoBehaviour
 
 				postions.Add(pos + middle);
 			}
-			radius = radius + (j+1) + offset;
+			radius = radius + (j + 1) + offset;
 		}
 
 		List<Vector3> rotpos = new List<Vector3>();
@@ -114,11 +109,9 @@ public class FormationManager : MonoBehaviour
 		return rotpos;
 	}
 
-
-
 	private Vector3 RotatePoint(Vector3 mid, float angle, Vector3 p)
 	{
-		
+
 		float s = Mathf.Sin(angle);
 		float c = Mathf.Cos(angle);
 

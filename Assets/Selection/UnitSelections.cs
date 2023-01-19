@@ -7,7 +7,6 @@ public class UnitSelections : MonoBehaviour
 	public List<GameObject> unitlist = new List<GameObject>();
 	public List<GameObject> unitsSelected = new List<GameObject>();
 
-
 	// Singleton design pattern, only 1 UnitSelection can exist at a time.
 	public static UnitSelections Instance { get; private set; }
 	private void Awake()
